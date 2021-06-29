@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  prom:
+    image: "prom/prometheus:v2.22.0"
+    container_name:
+        "prom_test"
+    ports:
+      - "9090:9090"
+  csv:
+    image: "infracloudio/csvserver"
+    env_file:
+      - ./env
+    volumes:
+      - /root/csvserver/solution/inputFile:/csvserver/inputdata
+    container_name:
+        "csv_test"
+    ports:
+      - "9393:9300"
