@@ -1,3 +1,5 @@
+    The CSV Server assignment by www.infracloud.io
+
 ########  Install Docker and Docker-compose  ########
 
 # amazon-linux-extras install docker -y
@@ -16,7 +18,7 @@
 
 # yum install -y git
 
-# git clone https://github.com/infracloudio/csvserver.git
+# git clone https://github.com/gansnsk/csvserver
 
 # cd csvserver/solution/
 
@@ -24,43 +26,20 @@
 
 # docker pull prom/prometheus:v2.22.0
 
-# docker images
+# docker-compose up -d
 
-# vim gencsv.sh
+# docker container ps
 
-#!/bin/bash
-touch inputFile
-for i in `seq 10`;
-do
-    RANDOM=`expr $$ / $i`
-	echo "$i , $RANDOM " >> inputFile
-done
+Now open the browser and check the links;
 
-# chmod 755 gencsv.sh
+http://server-IP:9393 >> To check the CSV Server output;
 
-# ./gencsv.sh
+http://server-IP:9090 >> To check the Prometheus graph; under the same graph you can check Status >> Targets for added CSV Server configuration in prometheus.yml file;
 
-# chmod 777 inputFile
+http://server-IP:9393/metrics >> To check the CSV Server container metrics;
 
+Type csvserver_records in the query box of Prometheus. Click on Execute and then switch to the Graph tab. 
 
-################   Part I  ################
+The Prometheus instance should be accessible at http://server-IP:9090, and it should show a straight line graph with value 10 (consider shrinking the time range to 5m).
 
-# docker run -d -v /root/csvserver/solution/inputFile:/csvserver/inputdata infracloudio/csvserver
-
-# docker container ps  >> To veriy the running container ID
-
-# docker container exec -it "container ID" /bin/bash
-
-Once you enter in container verify the port;
-
-# netstat -tunlp
-
-exit from the container, then stop and remove;
-
-# docker container stop "container ID"
-
-# docker container rm "container ID"
-
-# docker run -d -v /root/csvserver/solution/inputFile:/csvserver/inputdata -p 9393:9300 infracloudio/csvserver
-
-Now open browser and check the output of the csv server container http://server-IP:9393
+##################### Setup Completed ##########################
